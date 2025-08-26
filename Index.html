@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeiterfassung & Lohnrechner</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlplaXRlcmZhc3N1bmcgJiBMb2hucmVjaG5lciIsCiAgInNob3J0X25hbWUiOiAiWmVpdGVyZmFzc3VuZyIsCiAgImRlc2NyaXB0aW9uIjogIkVyZmFzc2UgZGVpbmUgQXJiZWl0c3plaXRlbiB1bmQgdmVyd2FsdGUgZGVpbmVuIEthc3NlbmJlc3RhbmQiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzY2N2VlYSIsCiAgInRoZW1lX2NvbG9yIjogIiM2NjdlZWEiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1USTRJaUJvWldsbmFIUTlJakV5T0NJZ2RtbGxkMEp2ZUQwaU1DQXdJREV5T0NBeU9EZ2lJR1pwYkd3OUlpTTJOamRsWldFaUlIaHRiRzV6UFNKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1EQXdMM04yWnlJK1BISmxZM1FnZUQwaU1UQWlJSGs5SWpFd0lpQjNhV1IwYUQwaU1UQTRJaUJvWldsbmFIUTlJakkyT0NJZ2NuZzlJakV3SWlCbWFXeHNQU0lqWm1abUlpOCtQSFJsZUhRZ2VEMGlOalFpSUhrOUlqUXdJaUJtYVd4c1BTSWpOalkzWldWaElpQm1iMjUwTFdaaGJXbHNlVDBpUVhKcFlXd3NJSE5oYm5NdGMyVnlhV1lpSUdadmJuUXRjMmw2WlQwaU1qUWlJR1p2Ym5RdGQyVnBaMmgwUFNKaWIyeGtJajQ0VkdsbGRHVnlabUZ6YzNWdVp6d3ZkR1Y0ZEQ0OEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjEyOHgxMjgiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNalUySWlCb1pXbG5hSFE5SWpJMU5pSWdkbWxsZDBKdmVEMGlNQ0F3SURJMU5pQTFNVElpSUdacGJHdzlJaU0yTmpkbFpXRWlJSGh0Ykc1elBTSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREF3TDNOMlp5SStQSEpsWTNRZ2VEMGlNakFpSUhrOUlqSXdJaUIzYVdSMGFEMGlNakUySWlCb1pXbG5hSFE5SWpRMU5pSWdjbmc5SWpJd0lpQm1hV3hzUFNJalptWm1JaTgrUEhSbGVIUWdlRDBpTVRJNElpQjVQU0k0TUNJZ1ptbHNiRDBpSXpZMk4yVmxZU0lnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzTENCellXNXpMWE5sY21sbUlpQm1iMjUwTFhOcGVtVTlJalE0SWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJK09GUnBaWFJsY21aaGMzTjFibWM4TDNSbGVIUStQQzl6ZG1jKyIsCiAgICAgICJzaXplcyI6ICIyNTZ4MjU2IiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTlRFeUlpQm9aV2xuYUhROUlqVXhNaUlnZG1sbGQwSnZlRDBpTUNBd0lEVXhNaUF4TURJMElpQm1hV3hzUFNJak5qWTNaV1ZoSWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpUGp4eVpXTjBJSGc5SWpRd0lpQjVQU0kwTUNJZ2QybGtkR2c5SWpRek1pSWdhR1ZwWjJoMFBTSTVNelFpSUhKNElEMGlOREFpSUdacGJHdzlJaU5tWm1ZaUx6NDhkR1Y0ZENCNFBTSTFOVFlpSUhrOUlqRTJNQ0lnWm1sc2JEMGlJelkyTjJWbFlTSWdabTl1ZEMxbVlXMXBiSGs5SWtGeWFXRnNMQ0J6WVc1ekxYTmxjbWxtSWlCbWIyNTBMWE5wZW1VOUlqazJJaUJtYjI1MExYZGxhV2RvZEQwaVltOXNaQ0krT0ZScFpYUmxjbVpoYzNOMWJtYzhMM1JsZUhRK1BDOXpkbWMrIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Zeiterfassung">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAyODgiIGZpbGw9IiM2NjdlZWEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjI2OCIgcng9IjEwIiBmaWxsPSIjZmZmIi8+PHRleHQgeD0iNjQiIHk9IjQwIiBmaWxsPSIjNjY3ZWVhIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIj44VGlldGVyZmFzc3VuZzwvdGV4dD48L3N2Zz4=">
+    
+    <!-- Android PWA Support -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#667eea">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .btn-primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); }
+        
+        /* PWA Styles */
+        @media (display-mode: standalone) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+        
+        /* Install Button */
+        .install-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Install Button -->
+    <button id="installBtn" class="install-btn">
+        📱 App installieren
+    </button>
+
+    <!-- Header -->
+    <div class="gradient-bg text-white py-6 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-center">⏰ Zeiterfassung & Lohnrechner</h1>
+            <p class="text-center mt-2 opacity-90">Erfasse deine Arbeitszeiten und verwalte deinen Kassenbestand</p>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto p-3 space-y-4">
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 gap-3">
+            <button id="startShiftBtn" class="btn-primary text-white py-5 px-6 rounded-2xl font-semibold text-xl active:scale-95 transition-all duration-200 card-shadow">
+                🚀 Schicht starten
+            </button>
+            <button id="endShiftBtn" class="bg-red-500 active:bg-red-600 text-white py-5 px-6 rounded-2xl font-semibold text-xl active:scale-95 transition-all duration-200 card-shadow">
+                🏁 Schicht beenden
+            </button>
+        </div>
+
+        <!-- Current Shift Status -->
+        <div id="currentShiftStatus" class="bg-white rounded-2xl p-4 card-shadow hidden">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">📊 Aktuelle Schicht</h3>
+            <div class="space-y-4">
+                <div class="text-center bg-blue-50 p-3 rounded-xl">
+                    <p class="text-sm text-gray-600">Beginn</p>
+                    <p id="currentStart" class="text-xl font-semibold text-blue-600">--:--</p>
+                </div>
+                <div class="text-center bg-green-50 p-3 rounded-xl">
+                    <p class="text-sm text-gray-600">Dauer</p>
+                    <p id="currentDuration" class="text-xl font-semibold text-green-600">0:00</p>
+                </div>
+                <div class="text-center bg-purple-50 p-3 rounded-xl">
+                    <p class="text-sm text-gray-600">Aktueller Lohn</p>
+                    <p id="currentWage" class="text-xl font-semibold text-purple-600">0,00 €</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Entry Form -->
+        <div class="bg-white rounded-2xl p-4 card-shadow">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 Schicht erfassen</h2>
+            
+            <form id="shiftForm" class="space-y-4">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Datum</label>
+                        <input type="date" id="date" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Pause (Minuten)</label>
+                        <input type="number" id="break" placeholder="30" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" min="0">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Schichtbeginn</label>
+                        <input type="time" id="startTime" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Schichtende</label>
+                        <input type="time" id="endTime" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Kassenbestand Beginn (€)</label>
+                        <input type="number" id="cashStart" step="0.01" placeholder="0.00" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">Kassenbestand Ende (€)</label>
+                        <input type="number" id="cashEnd" step="0.01" placeholder="0.00" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">👤 Schicht übernommen von</label>
+                        <input type="text" id="handoverFrom" placeholder="Name des Vorgängers" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-base font-medium text-gray-700 mb-2">🤝 Schicht übergeben an</label>
+                        <input type="text" id="handoverTo" placeholder="Name des Nachfolgers" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="space-y-3">
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Arbeitsstunden</p>
+                            <p id="calculatedHours" class="text-2xl font-bold text-blue-600">0,00</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Tageslohn</p>
+                            <p id="calculatedWage" class="text-2xl font-bold text-green-600">0,00 €</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">Kassendifferenz</p>
+                            <p id="calculatedCashDiff" class="text-2xl font-bold text-purple-600">0,00 €</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-primary text-white py-5 px-6 rounded-2xl font-semibold text-lg active:scale-95 transition-all duration-200">
+                    💾 Schicht speichern
+                </button>
+            </form>
+        </div>
+
+        <!-- Monthly Overview -->
+        <div class="bg-white rounded-2xl p-4 card-shadow">
+            <div class="space-y-4 mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">📈 Monatsübersicht</h2>
+                <div class="space-y-3">
+                    <select id="monthFilter" class="w-full px-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500">
+                        <option value="">Alle Monate</option>
+                    </select>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="exportExcel" class="bg-green-500 active:bg-green-600 text-white px-4 py-3 rounded-xl font-medium transition-colors text-sm">
+                            📊 Excel
+                        </button>
+                        <button id="exportPDF" class="bg-red-500 active:bg-red-600 text-white px-4 py-3 rounded-xl font-medium transition-colors text-sm">
+                            📄 PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="bg-blue-50 p-4 rounded-xl text-center">
+                    <p class="text-xs text-blue-600 font-medium">Gesamtstunden</p>
+                    <p id="totalHours" class="text-lg font-bold text-blue-700">0,00</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl text-center">
+                    <p class="text-xs text-green-600 font-medium">Gesamtlohn</p>
+                    <p id="totalWage" class="text-lg font-bold text-green-700">0,00 €</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-xl text-center">
+                    <p class="text-xs text-purple-600 font-medium">Kassendifferenz</p>
+                    <p id="totalCashDiff" class="text-lg font-bold text-purple-700">0,00 €</p>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-xl text-center">
+                    <p class="text-xs text-orange-600 font-medium">Schichten</p>
+                    <p id="totalShifts" class="text-lg font-bold text-orange-700">0</p>
+                </div>
+            </div>
+
+            <!-- Shifts Table -->
+            <div class="space-y-3" id="shiftsContainer">
+                <div class="text-center text-gray-500 py-8">
+                    Noch keine Schichten erfasst
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Installation
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICd6ZWl0ZXJmYXNzdW5nLXYxJzsKY29uc3QgdXJsc1RvQ2FjaGUgPSBbCiAgJy8nCl07CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2luc3RhbGwnLCAoZXZlbnQpID0+IHsKICBldmVudC53YWl0VW50aWwoCiAgICBjYWNoZXMub3BlbihDQUNIRV9OQU1FKQogICAgICAudGhlbigoY2FjaGUpID0+IGNhY2hlLmFkZEFsbCh1cmxzVG9DYWNoZSkpCiAgKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgKGV2ZW50KSA9PiB7CiAgZXZlbnQucmVzcG9uZFdpdGgoCiAgICBjYWNoZXMubWF0Y2goZXZlbnQucmVxdWVzdCkKICAgICAgLnRoZW4oKHJlc3BvbnNlKSA9PiB7CiAgICAgICAgaWYgKHJlc3BvbnNlKSB7CiAgICAgICAgICByZXR1cm4gcmVzcG9uc2U7CiAgICAgICAgfQogICAgICAgIHJldHVybiBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgICAgfSkKICApOwp9KTs=');
+        }
+
+        class TimeTracker {
+            constructor() {
+                this.shifts = JSON.parse(localStorage.getItem('shifts') || '[]');
+                this.currentShift = JSON.parse(localStorage.getItem('currentShift') || 'null');
+                this.hourlyRate = 7;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateDisplay();
+                this.populateMonthFilter();
+                this.setTodayDate();
+                
+                if (this.currentShift) {
+                    this.showCurrentShift();
+                    this.startTimer();
+                }
+            }
+
+            setupEventListeners() {
+                document.getElementById('startShiftBtn').addEventListener('click', () => this.startShift());
+                document.getElementById('endShiftBtn').addEventListener('click', () => this.endShift());
+                document.getElementById('shiftForm').addEventListener('submit', (e) => this.handleFormSubmit(e));
+                document.getElementById('monthFilter').addEventListener('change', () => this.updateDisplay());
+                document.getElementById('exportExcel').addEventListener('click', () => this.exportToExcel());
+                document.getElementById('exportPDF').addEventListener('click', () => this.exportToPDF());
+
+                // Real-time calculation
+                ['startTime', 'endTime', 'break', 'cashStart', 'cashEnd'].forEach(id => {
+                    document.getElementById(id).addEventListener('input', () => this.calculatePreview());
+                });
+            }
+
+            setTodayDate() {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').value = today;
+            }
+
+            startShift() {
+                const now = new Date();
+                this.currentShift = {
+                    date: now.toISOString().split('T')[0],
+                    startTime: now.toTimeString().slice(0, 5),
+                    startTimestamp: now.getTime()
+                };
+                
+                localStorage.setItem('currentShift', JSON.stringify(this.currentShift));
+                this.showCurrentShift();
+                this.startTimer();
+                
+                // Pre-fill form
+                document.getElementById('date').value = this.currentShift.date;
+                document.getElementById('startTime').value = this.currentShift.startTime;
+            }
+
+            endShift() {
+                if (!this.currentShift) {
+                    alert('Keine aktive Schicht gefunden!');
+                    return;
+                }
+
+                const now = new Date();
+                const endTime = now.toTimeString().slice(0, 5);
+                
+                document.getElementById('endTime').value = endTime;
+                this.calculatePreview();
+                
+                this.currentShift = null;
+                localStorage.removeItem('currentShift');
+                document.getElementById('currentShiftStatus').classList.add('hidden');
+                
+                alert('Schicht beendet! Bitte fülle die restlichen Daten aus und speichere die Schicht.');
+            }
+
+            showCurrentShift() {
+                document.getElementById('currentShiftStatus').classList.remove('hidden');
+                document.getElementById('currentStart').textContent = this.currentShift.startTime;
+            }
+
+            startTimer() {
+                setInterval(() => {
+                    if (this.currentShift) {
+                        const now = Date.now();
+                        const duration = now - this.currentShift.startTimestamp;
+                        const hours = Math.floor(duration / (1000 * 60 * 60));
+                        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+                        
+                        document.getElementById('currentDuration').textContent = `${hours}:${minutes.toString().padStart(2, '0')}`;
+                        
+                        const totalHours = duration / (1000 * 60 * 60);
+                        const wage = totalHours * this.hourlyRate;
+                        document.getElementById('currentWage').textContent = `${wage.toFixed(2)} €`;
+                    }
+                }, 1000);
+            }
+
+            calculatePreview() {
+                const startTime = document.getElementById('startTime').value;
+                const endTime = document.getElementById('endTime').value;
+                const breakMinutes = parseInt(document.getElementById('break').value) || 0;
+                const cashStart = parseFloat(document.getElementById('cashStart').value) || 0;
+                const cashEnd = parseFloat(document.getElementById('cashEnd').value) || 0;
+
+                if (startTime && endTime) {
+                    const hours = this.calculateHours(startTime, endTime, breakMinutes);
+                    const wage = hours * this.hourlyRate;
+                    const cashDiff = cashEnd - cashStart;
+
+                    document.getElementById('calculatedHours').textContent = hours.toFixed(2);
+                    document.getElementById('calculatedWage').textContent = `${wage.toFixed(2)} €`;
+                    document.getElementById('calculatedCashDiff').textContent = `${cashDiff.toFixed(2)} €`;
+                }
+            }
+
+            calculateHours(startTime, endTime, breakMinutes = 0) {
+                const [startHour, startMin] = startTime.split(':').map(Number);
+                const [endHour, endMin] = endTime.split(':').map(Number);
+                
+                let startMinutes = startHour * 60 + startMin;
+                let endMinutes = endHour * 60 + endMin;
+                
+                if (endMinutes < startMinutes) {
+                    endMinutes += 24 * 60; // Next day
+                }
+                
+                const totalMinutes = endMinutes - startMinutes - breakMinutes;
+                return Math.max(0, totalMinutes / 60);
+            }
+
+            handleFormSubmit(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const shift = {
+                    id: Date.now(),
+                    date: document.getElementById('date').value,
+                    startTime: document.getElementById('startTime').value,
+                    endTime: document.getElementById('endTime').value,
+                    break: parseInt(document.getElementById('break').value) || 0,
+                    cashStart: parseFloat(document.getElementById('cashStart').value) || 0,
+                    cashEnd: parseFloat(document.getElementById('cashEnd').value) || 0,
+                    handoverFrom: document.getElementById('handoverFrom').value.trim(),
+                    handoverTo: document.getElementById('handoverTo').value.trim()
+                };
+
+                shift.hours = this.calculateHours(shift.startTime, shift.endTime, shift.break);
+                shift.wage = shift.hours * this.hourlyRate;
+                shift.cashDiff = shift.cashEnd - shift.cashStart;
+
+                this.shifts.push(shift);
+                this.shifts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                localStorage.setItem('shifts', JSON.stringify(this.shifts));
+                
+                this.updateDisplay();
+                this.populateMonthFilter();
+                e.target.reset();
+                this.setTodayDate();
+                
+                alert('Schicht erfolgreich gespeichert!');
+            }
+
+            deleteShift(id) {
+                if (confirm('Schicht wirklich löschen?')) {
+                    this.shifts = this.shifts.filter(shift => shift.id !== id);
+                    localStorage.setItem('shifts', JSON.stringify(this.shifts));
+                    this.updateDisplay();
+                    this.populateMonthFilter();
+                }
+            }
+
+            getFilteredShifts() {
+                const selectedMonth = document.getElementById('monthFilter').value;
+                if (!selectedMonth) return this.shifts;
+                
+                return this.shifts.filter(shift => shift.date.startsWith(selectedMonth));
+            }
+
+            updateDisplay() {
+                const filteredShifts = this.getFilteredShifts();
+                this.updateSummary(filteredShifts);
+                this.updateTable(filteredShifts);
+            }
+
+            updateSummary(shifts) {
+                const totalHours = shifts.reduce((sum, shift) => sum + shift.hours, 0);
+                const totalWage = shifts.reduce((sum, shift) => sum + shift.wage, 0);
+                const totalCashDiff = shifts.reduce((sum, shift) => sum + shift.cashDiff, 0);
+
+                document.getElementById('totalHours').textContent = totalHours.toFixed(2);
+                document.getElementById('totalWage').textContent = `${totalWage.toFixed(2)} €`;
+                document.getElementById('totalCashDiff').textContent = `${totalCashDiff.toFixed(2)} €`;
+                document.getElementById('totalShifts').textContent = shifts.length;
+            }
+
+            updateTable(shifts) {
+                const container = document.getElementById('shiftsContainer');
+                
+                if (shifts.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            Keine Schichten für den ausgewählten Zeitraum
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = shifts.map(shift => `
+                    <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold text-gray-800">${new Date(shift.date).toLocaleDateString('de-DE')}</p>
+                                <p class="text-sm text-gray-600">${shift.startTime} - ${shift.endTime}</p>
+                            </div>
+                            <button onclick="timeTracker.deleteShift(${shift.id})" class="bg-red-500 active:bg-red-600 text-white px-3 py-2 rounded-lg text-sm">
+                                🗑️
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-gray-600">Stunden</p>
+                                <p class="font-semibold text-blue-600">${shift.hours.toFixed(2)}h</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Lohn</p>
+                                <p class="font-semibold text-green-600">${shift.wage.toFixed(2)} €</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Begonnen mit</p>
+                                <p class="font-semibold text-blue-600">${shift.cashStart.toFixed(2)} €</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Übergeben mit</p>
+                                <p class="font-semibold text-purple-600">${shift.cashEnd.toFixed(2)} €</p>
+                            </div>
+                        </div>
+                        
+                        ${shift.handoverFrom || shift.handoverTo ? `
+                        <div class="border-t pt-3 mt-3">
+                            <div class="grid grid-cols-1 gap-2 text-sm">
+                                ${shift.handoverFrom ? `
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-600">👤 Übernommen von:</span>
+                                    <span class="font-medium text-gray-800">${shift.handoverFrom}</span>
+                                </div>
+                                ` : ''}
+                                ${shift.handoverTo ? `
+                                <div class="flex items-center gap-2">
+                                    <span class="text-gray-600">🤝 Übergeben an:</span>
+                                    <span class="font-medium text-gray-800">${shift.handoverTo}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+
+            populateMonthFilter() {
+                const months = [...new Set(this.shifts.map(shift => shift.date.slice(0, 7)))].sort().reverse();
+                const select = document.getElementById('monthFilter');
+                
+                select.innerHTML = '<option value="">Alle Monate</option>' + 
+                    months.map(month => {
+                        const date = new Date(month + '-01');
+                        const monthName = date.toLocaleDateString('de-DE', { year: 'numeric', month: 'long' });
+                        return `<option value="${month}">${monthName}</option>`;
+                    }).join('');
+            }
+
+            exportToExcel() {
+                const shifts = this.getFilteredShifts();
+                if (shifts.length === 0) {
+                    alert('Keine Daten zum Exportieren vorhanden!');
+                    return;
+                }
+
+                const data = shifts.map(shift => ({
+                    'Datum': new Date(shift.date).toLocaleDateString('de-DE'),
+                    'Beginn': shift.startTime,
+                    'Ende': shift.endTime,
+                    'Pause (Min)': shift.break,
+                    'Stunden': shift.hours.toFixed(2),
+                    'Lohn (€)': shift.wage.toFixed(2),
+                    'Kasse Start (€)': shift.cashStart.toFixed(2),
+                    'Kasse Ende (€)': shift.cashEnd.toFixed(2),
+                    'Kassendifferenz (€)': shift.cashDiff.toFixed(2),
+                    'Übernommen von': shift.handoverFrom || '',
+                    'Übergeben an': shift.handoverTo || ''
+                }));
+
+                const ws = XLSX.utils.json_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Schichten');
+                
+                const filename = `Zeiterfassung_${new Date().toISOString().split('T')[0]}.xlsx`;
+                XLSX.writeFile(wb, filename);
+            }
+
+            exportToPDF() {
+                const shifts = this.getFilteredShifts();
+                if (shifts.length === 0) {
+                    alert('Keine Daten zum Exportieren vorhanden!');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(20);
+                doc.text('Zeiterfassung & Lohnabrechnung', 20, 20);
+                
+                doc.setFontSize(12);
+                let y = 40;
+                
+                const totalHours = shifts.reduce((sum, shift) => sum + shift.hours, 0);
+                const totalWage = shifts.reduce((sum, shift) => sum + shift.wage, 0);
+                const totalCashDiff = shifts.reduce((sum, shift) => sum + shift.cashDiff, 0);
+                
+                doc.text(`Zusammenfassung:`, 20, y);
+                y += 10;
+                doc.text(`Gesamtstunden: ${totalHours.toFixed(2)}h`, 20, y);
+                y += 7;
+                doc.text(`Gesamtlohn: ${totalWage.toFixed(2)} €`, 20, y);
+                y += 7;
+                doc.text(`Kassendifferenz: ${totalCashDiff.toFixed(2)} €`, 20, y);
+                y += 15;
+                
+                doc.text('Schichten:', 20, y);
+                y += 10;
+                
+                shifts.forEach(shift => {
+                    if (y > 260) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    
+                    doc.text(`${new Date(shift.date).toLocaleDateString('de-DE')} | ${shift.startTime}-${shift.endTime} | ${shift.hours.toFixed(2)}h | ${shift.wage.toFixed(2)}€`, 20, y);
+                    y += 7;
+                    
+                    if (shift.handoverFrom || shift.handoverTo) {
+                        if (shift.handoverFrom) {
+                            doc.text(`  Übernommen von: ${shift.handoverFrom}`, 20, y);
+                            y += 5;
+                        }
+                        if (shift.handoverTo) {
+                            doc.text(`  Übergeben an: ${shift.handoverTo}`, 20, y);
+                            y += 5;
+                        }
+                        y += 2;
+                    }
+                });
+                
+                const filename = `Zeiterfassung_${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(filename);
+            }
+        }
+
+        // Initialize the app
+        const timeTracker = new TimeTracker();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97525970c74762cc',t:'MTc1NjIwMTAzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
